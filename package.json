@@ -1,0 +1,27 @@
+{
+  "name": "proxima-js",
+  "version": "1.0.0",
+  "description": "Proxima is a multilayered fully connected neural network micro library.",
+  "main": "proxima.js",
+  "scripts": {
+    "test": "node src/proxima.js",
+    "release": "npm run-script test && grunt"
+  },
+  "keywords": [],
+  "author": "Wim Drapier",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^1.0.4",
+    "grunt-contrib-uglify": "^4.0.1",
+    "grunt-strip-code": "^1.0.6"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wdrap/proxima-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wdrap/proxima-js/issues"
+  },
+  "homepage": "https://github.com/wdrap/proxima-js#readme"
+}
