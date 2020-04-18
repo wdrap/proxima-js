@@ -116,8 +116,19 @@
             },
             predict: function(inputs) {
                 return feedForward(inputs)
+            },
+            export: function() {
+                return JSON.stringify({ nn: nn, weights: weights, bias_weights: bias_weights, gradients: gradients })
+            },
+            import: function(state) {
+                var state = JSON.parse(state)
+                nn = state.nn
+                weights = state.weights
+                bias_weights = state.bias_weights
+                gradients = state.gradients
             }
         }
+
     }
 
     /* start-test-block */
