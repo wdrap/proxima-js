@@ -121,63 +121,25 @@
                 return JSON.stringify({ nn: nn, weights: weights, bias_weights: bias_weights, gradients: gradients })
             },
             import: function(state) {
-                var state = JSON.parse(state)
-                nn = state.nn
-                weights = state.weights
-                bias_weights = state.bias_weights
-                gradients = state.gradients
-            }
+                var s = JSON.parse(state)
+                nn = s.nn
+                weights = s.weights
+                bias_weights = s.bias_weights
+                gradients = s.gradients
+            },
+            /* start-test-block */
+            _feedForward: feedForward,
+            _costFunction: costFunction,
+            _backPropagation: backPropagation,
+            _updateWeights: updateWeights,
+            _nn: function() { return nn },
+            _outputs: function () { return outputs },
+            _gradients: function() { return gradients },
+            _weights: function() { return weights },
+            /* end-test-block */
         }
 
     }
-
-    /* start-test-block */
-    // For now, no need for a testing framework. Code between xxx-test-block comments will be removed by grunt.
-    function test() {
-        setup({neural_network: [2,2,2]})
-        bias_weights = [[0.8, 0.25], [0.15, 0.7]]
-        weights = [[[0.1, 0.12], [0.2, 0.17]], [[0.05, 0.33], [0.4, 0.07]]]
-
-        JSON.stringify(weights) === JSON.stringify([
-            [[0.1, 0.12], [0.2, 0.17]],
-            [[0.05, 0.33], [0.4, 0.07]]
-        ]) ? console.log('passed setup weights') : console.error('failed setup weights')
-
-        JSON.stringify(bias_weights) === JSON.stringify([
-            [0.8, 0.25],
-            [0.15, 0.7]
-        ]) ? console.log('passed setup bias weights') : console.error('failed setup bias weights')
-
-        feedForward([.15, .35])
-        JSON.stringify(outputs) === JSON.stringify([
-            [.15,.35],
-            [0.7020334875314546,0.5840690618470776],
-            [0.593353109032932,0.7353032619293852]
-        ]) ? console.log('passed feedforward') : console.error('failed feedforward')
-
-        var se = costFunction([0, 1])
-        se === 0.21106613757213508 ? console.log('passed costFunction') : console.error('failed costFunction')
-
-        backPropagation([0, 1])
-        JSON.stringify(gradients) === JSON.stringify([
-            [-0.00023446365814264232, -0.0003332022601439299],
-            [0.0028133067134372743, -0.010601306617214415],
-            [-0.14316732182367956, 0.051518554765687945]
-        ]) ? console.log('passed gradients') : console.error('failed gradients')
-
-        updateWeights(.5)
-        JSON.stringify(weights) === JSON.stringify([
-            [[0.1002109980035078, 0.12049232867485152], [0.19920490200370894, 0.1681447713419875]],
-            [[-0.00025412712020794065, 0.2881901983276424], [0.41808387533736807, 0.08504519697485632]]
-        ]) ? console.log('passed updated weights') : console.error('failed updated weights')
-        JSON.stringify(bias_weights) === JSON.stringify(
-            [[0.8014066533567187, 0.2446993466913928],
-                [0.07841633908816022, 0.725759277382844]
-        ]) ? console.log('passed updated bias weights') : console.error('failed updated bias weights')
-    }
-
-    test()
-    /* end-test-block */
 
     if (typeof exports !== 'undefined' && module.exports) {
         module.exports = Proxima

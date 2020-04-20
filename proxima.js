@@ -116,10 +116,20 @@
             },
             predict: function(inputs) {
                 return feedForward(inputs)
-            }
+            },
+            export: function() {
+                return JSON.stringify({ nn: nn, weights: weights, bias_weights: bias_weights, gradients: gradients })
+            },
+            import: function(state) {
+                var s = JSON.parse(state)
+                nn = s.nn
+                weights = s.weights
+                bias_weights = s.bias_weights
+                gradients = s.gradients
+            },
         }
-    }
 
+    }
 
     if (typeof exports !== 'undefined' && module.exports) {
         module.exports = Proxima
