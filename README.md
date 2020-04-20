@@ -11,7 +11,7 @@ npm install proxima --save
 ```
 ## Usage
 ```javascript
-var Proxima = require('../proxima') // only for nodejs
+var Proxima = require('proxima-js') // only for nodejs
 
 var xor_training_data = [
     {inputs: [0, 1], targets: [1]},
@@ -52,7 +52,7 @@ var hyperParameters = {
     learning_rate: 0.5,         // η Defaults to 0.5
     max_iterations: 15000,      // Maximum training iterations if the cost_threshold in not reached
     cost_threshold: 0.005,      // Stops training when the result of the cost/loss function is less, defaults to 0.05  
-    log_after_x_iterations: 0,
+    log_after_x_iterations: 0,  // Outputs the error after x iterations, 0 means no output
 }
 ```
 
