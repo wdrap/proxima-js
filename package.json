@@ -4,16 +4,19 @@
   "description": "Proxima is a multilayered fully connected neural network micro library.",
   "main": "proxima.js",
   "scripts": {
-    "test": "node src/proxima.js",
+    "clean": "rm -rf proxima.js proxima.min.js",
+    "test": "mocha src/",
     "release": "npm run-script test && grunt"
   },
   "keywords": [],
   "author": "Wim Drapier",
   "license": "MIT",
   "devDependencies": {
+    "chai": "^4.2.0",
     "grunt": "^1.0.4",
     "grunt-contrib-uglify": "^4.0.1",
-    "grunt-strip-code": "^1.0.6"
+    "grunt-strip-code": "^1.0.6",
+    "mocha": "^7.1.1"
   },
   "dependencies": {},
   "repository": {
