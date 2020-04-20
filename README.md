@@ -45,7 +45,6 @@ training: 37.64ms
 [ 0.09967427748286291 ]
 ```
 ### Configuration options
-
 ```javascript
 var hyperParameters = {
     neural_network: [2,3,1],    // 3 layered neural network with 1 input layer with 2 nodes, 1 hidden layer with 3 nodes and 1 output layer with 1 node
@@ -55,6 +54,10 @@ var hyperParameters = {
     log_after_x_iterations: 0,  // Outputs the error after x iterations, 0 means no output
 }
 ```
+### Export/import the neural network state
+After the neural network has completed training you can use `export()` to get the neural network state in json format 
+and `import()` to load the neural network state back in. This is convenient, so you don't have to train the network 
+every time or even perform training on another machine.
 
 # What's behind Proxima
 ## Activation functions

@@ -59,7 +59,6 @@
     function backPropagation(targets) {
         for (var l = nn.length - 1; l >= 0; l--) {
             for (var n = 0, nodes = nn[l]; n < nodes; n++) {
-
                 var error = 0
                 if (l === nn.length - 1) {
                     error = targets[n] - outputs[l][n]
@@ -68,7 +67,6 @@
                         error +=  gradients[l+1][g] * weights[l][g][n]
                     }
                 }
-
                 gradients[l][n] = error * outputs[l][n] * (1 - outputs[l][n])
             }
         }
@@ -138,7 +136,6 @@
             _weights: function() { return weights },
             /* end-test-block */
         }
-
     }
 
     if (typeof exports !== 'undefined' && module.exports) {
