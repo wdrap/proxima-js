@@ -7,7 +7,7 @@ _Support Proxima development by donating or becoming a sponsor._
  
 ## Installation
 ```
-npm install proxima --save
+npm install proxima-js --save
 ```
 ## Usage
 ```javascript
