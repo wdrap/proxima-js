@@ -59,7 +59,6 @@
     function backPropagation(targets) {
         for (var l = nn.length - 1; l >= 0; l--) {
             for (var n = 0, nodes = nn[l]; n < nodes; n++) {
-
                 var error = 0
                 if (l === nn.length - 1) {
                     error = targets[n] - outputs[l][n]
@@ -68,7 +67,6 @@
                         error +=  gradients[l+1][g] * weights[l][g][n]
                     }
                 }
-
                 gradients[l][n] = error * outputs[l][n] * (1 - outputs[l][n])
             }
         }
@@ -85,6 +83,16 @@
         }
     }
 
+    function flattenOutputs(outputs, error) {
+        var threshold = parseFloat(error.toFixed(2))
+        var flattened = new Array(outputs.length)
+        for (var i = 0; i < outputs.length; i++) {
+                flattened[i] = (outputs[i] < threshold / 10 || outputs[i] > threshold) ?
+                    Math.round(outputs[i]) : outputs[i]
+        }
+        return flattened
+    }
+
     function Proxima(hyperParameters) {
         hyperParameters = hyperParameters || {}
         hyperParameters.neural_network = hyperParameters.neural_network || [2,3,1]
@@ -94,10 +102,11 @@
         var cost_threshold = hyperParameters.cost_threshold || 0.005
         var log_after_x_iterations = hyperParameters.log_after_x_iterations || 0
         setup(hyperParameters)
+        var se = 1
         return {
             train: function(data) {
                 console.time('training')
-                var se = 1
+                //var se = 1
                 for (var i = 0; i < max_iterations && se > cost_threshold; i++) {
                     for (var j = 0, length = data.length; j < length; j++) {
                         feedForward(data[j].inputs)
@@ -115,7 +124,14 @@
                 console.timeEnd('training')
             },
             predict: function(inputs) {
-                return feedForward(inputs)
+                var outputs = feedForward(inputs)
+                return {
+                    output: outputs,
+                    /**
+                     * flatten will round the outputs to the nearest integer value using the network error as a threshold
+                     */
+                    flatten: flattenOutputs(outputs, se)
+                }
             },
             export: function() {
                 return JSON.stringify({ nn: nn, weights: weights, bias_weights: bias_weights, gradients: gradients })
@@ -128,7 +144,6 @@
                 gradients = s.gradients
             },
         }
-
     }
 
     if (typeof exports !== 'undefined' && module.exports) {

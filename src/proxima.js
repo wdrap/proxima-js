@@ -83,6 +83,16 @@
         }
     }
 
+    function flattenOutputs(outputs, error) {
+        var threshold = parseFloat(error.toFixed(2))
+        var flattened = new Array(outputs.length)
+        for (var i = 0; i < outputs.length; i++) {
+                flattened[i] = (outputs[i] < threshold / 10 || outputs[i] > threshold) ?
+                    Math.round(outputs[i]) : outputs[i]
+        }
+        return flattened
+    }
+
     function Proxima(hyperParameters) {
         hyperParameters = hyperParameters || {}
         hyperParameters.neural_network = hyperParameters.neural_network || [2,3,1]
@@ -92,10 +102,11 @@
         var cost_threshold = hyperParameters.cost_threshold || 0.005
         var log_after_x_iterations = hyperParameters.log_after_x_iterations || 0
         setup(hyperParameters)
+        var se = 1
         return {
             train: function(data) {
                 console.time('training')
-                var se = 1
+                //var se = 1
                 for (var i = 0; i < max_iterations && se > cost_threshold; i++) {
                     for (var j = 0, length = data.length; j < length; j++) {
                         feedForward(data[j].inputs)
@@ -113,7 +124,14 @@
                 console.timeEnd('training')
             },
             predict: function(inputs) {
-                return feedForward(inputs)
+                var outputs = feedForward(inputs)
+                return {
+                    output: outputs,
+                    /**
+                     * flatten will round the outputs to the nearest integer value using the network error as a threshold
+                     */
+                    flatten: flattenOutputs(outputs, se)
+                }
             },
             export: function() {
                 return JSON.stringify({ nn: nn, weights: weights, bias_weights: bias_weights, gradients: gradients })
@@ -130,6 +148,7 @@
             _costFunction: costFunction,
             _backPropagation: backPropagation,
             _updateWeights: updateWeights,
+            _flattenOutputs: flattenOutputs,
             _nn: function() { return nn },
             _outputs: function () { return outputs },
             _gradients: function() { return gradients },

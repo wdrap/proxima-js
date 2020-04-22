@@ -39,10 +39,10 @@ The above program will print something like this to the console
 ```
 training: 32.45ms error: 0.004967480795865376 iterations: 1301
 training: 37.64ms
-[ 0.9003734502498547 ]
-[ 0.9000429398063956 ]
-[ 0.09926572660491863 ]
-[ 0.09967427748286291 ]
+{ output: [ 0.9003201828337848 ], flatten: [ 1 ] }
+{ output: [ 0.9013084243232945 ], flatten: [ 1 ] }
+{ output: [ 0.09870657427124692 ], flatten: [ 0 ] }
+{ output: [ 0.09994385760486248 ], flatten: [ 0 ] }
 ```
 ### Configuration options
 ```javascript
@@ -58,6 +58,17 @@ var hyperParameters = {
 After the neural network has completed training you can use `export()` to get the neural network state in json format 
 and `import()` to load the neural network state back in. This is convenient, so you don't have to train the network 
 every time or even perform training on another machine.
+
+## Methods
+`#train(data)`
+
+data must be an array of objects `{inputs: [0, 1], targets: [1]} `.
+
+`#predict()`
+
+returns an object with where:
+- output: is the neural network actual output
+- flatten: is each output rounded to the nearest integer using the network error as a threshold
 
 # What's behind Proxima
 ## Activation functions

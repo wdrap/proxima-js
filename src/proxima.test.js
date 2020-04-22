@@ -59,6 +59,13 @@ describe('Proxima internal members test', function() {
             [-0.14316732182367956, 0.051518554765687945]
         ])
     })
+
+    it('#flattenOutputs()', function() {
+        expect(p._flattenOutputs([.91], .9 )).to.deep.equal([1])
+        expect(p._flattenOutputs([.9], .9 )).to.deep.equal([.9])
+        expect(p._flattenOutputs([.09], .9 )).to.deep.equal([.09])
+        expect(p._flattenOutputs([.089], .9 )).to.deep.equal([0])
+    })
 })
 
 describe('Proxima public api', function() {
