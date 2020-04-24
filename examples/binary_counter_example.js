@@ -14,9 +14,9 @@ var training_data = [
 var hyperParameters = {
     neural_network: [3,5,3],
     learning_rate: 0.5,
-    max_iterations: 15000,
+    epoch_limit: 15000,
     cost_threshold: 0.005,
-    log_after_x_iterations: 100
+    log_after_x_epochs: 100
 }
 
 var p = Proxima(hyperParameters)

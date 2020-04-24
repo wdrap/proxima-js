@@ -4,9 +4,9 @@ var data = require('./bezdek_iris_data.json')
 var hyperParameters = {
     neural_network: [4,4,3],
     learning_rate: 0.1,
-    max_iterations: 15000,
-    cost_threshold: 0.001,
-    log_after_x_iterations: 100,
+    epoch_limit: 25000,
+    cost_threshold: 0.002,
+    log_after_x_epochs: 500,
 }
 
 var p = new Proxima(hyperParameters)

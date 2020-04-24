@@ -109,29 +109,26 @@
         hyperParameters.neural_network = hyperParameters.neural_network || [2,3,1]
         hyperParameters.learning_rate = hyperParameters.learning_rate || 0.3
 
-        var max_iterations = hyperParameters.max_iterations || 15000
+        var epoch_limit = hyperParameters.epoch_limit || 15000
         var cost_threshold = hyperParameters.cost_threshold || 0.005
-        var log_after_x_iterations = hyperParameters.log_after_x_iterations || 0
+        var log_after_x_epochs = hyperParameters.log_after_x_epochs || 0
         setup(hyperParameters)
         return {
             train: function(data, target_labels) {
                 labels = target_labels
-                console.time('training')
                 error = 1
-                for (var i = 0; i < max_iterations && error > cost_threshold; i++) {
+                console.time('training')
+                for (var epoch = 0; epoch < epoch_limit && error > cost_threshold;) {
                     for (var j = 0, length = data.length; j < length; j++) {
                         feedForward(data[j].inputs)
                         error = costFunction(data[j].targets)
-                        if (i % log_after_x_iterations === 0)
-                            console.timeLog('training', 'error: ' + error)
-
-                        if (error > cost_threshold) {
-                            backPropagation(data[j].targets)
-                            updateWeights(hyperParameters.learning_rate)
-                        }
+                        if (++epoch % log_after_x_epochs === 0 || error <= cost_threshold)
+                            console.timeLog('training', 'error: ' + error + ' epochs: ' + epoch)
+                        if (error <= cost_threshold) break;
+                        backPropagation(data[j].targets)
+                        updateWeights(hyperParameters.learning_rate)
                     }
                 }
-                console.timeLog('training', 'error: ' + error, 'iterations: ' + i )
                 console.timeEnd('training')
             },
             predict: function(inputs) {
