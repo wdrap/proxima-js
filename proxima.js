@@ -1,6 +1,6 @@
 ;(function () {
     'use strict'
-    var nn, weights, bias_weights, outputs, gradients
+    var nn, weights, bias_weights, outputs, gradients, error, labels
 
     function setup(hyperParams) {
         nn = hyperParams.neural_network
@@ -93,6 +93,17 @@
         return flattened
     }
 
+    function labelOutputs(outputs, labels) {
+        var labelled = new Array(outputs.length)
+        for (var i = 0; i < outputs.length; i++) {
+            if (labels !== undefined && outputs[i] === 1) {
+                return labels[i]
+            }
+            labelled[i] = !!outputs[i]
+        }
+        return labelled
+    }
+
     function Proxima(hyperParameters) {
         hyperParameters = hyperParameters || {}
         hyperParameters.neural_network = hyperParameters.neural_network || [2,3,1]
@@ -102,39 +113,46 @@
         var cost_threshold = hyperParameters.cost_threshold || 0.005
         var log_after_x_iterations = hyperParameters.log_after_x_iterations || 0
         setup(hyperParameters)
-        var se = 1
         return {
-            train: function(data) {
+            train: function(data, target_labels) {
+                labels = target_labels
                 console.time('training')
-                //var se = 1
-                for (var i = 0; i < max_iterations && se > cost_threshold; i++) {
+                error = 1
+                for (var i = 0; i < max_iterations && error > cost_threshold; i++) {
                     for (var j = 0, length = data.length; j < length; j++) {
                         feedForward(data[j].inputs)
-                        se = costFunction(data[j].targets)
+                        error = costFunction(data[j].targets)
                         if (i % log_after_x_iterations === 0)
-                            console.timeLog('training', 'error: ' + se)
+                            console.timeLog('training', 'error: ' + error)
 
-                        if (se > cost_threshold) {
+                        if (error > cost_threshold) {
                             backPropagation(data[j].targets)
                             updateWeights(hyperParameters.learning_rate)
                         }
                     }
                 }
-                console.timeLog('training', 'error: ' + se, 'iterations: ' + i )
+                console.timeLog('training', 'error: ' + error, 'iterations: ' + i )
                 console.timeEnd('training')
             },
             predict: function(inputs) {
                 var outputs = feedForward(inputs)
+                var flattened = flattenOutputs(outputs, error)
+                var labeled =  labelOutputs(flattened, labels)
                 return {
-                    output: outputs,
-                    /**
-                     * flatten will round the outputs to the nearest integer value using the network error as a threshold
-                     */
-                    flatten: flattenOutputs(outputs, se)
+                    outputs: outputs,
+                    flattened: flattened,
+                    labeled: labeled
                 }
             },
             export: function() {
-                return JSON.stringify({ nn: nn, weights: weights, bias_weights: bias_weights, gradients: gradients })
+                return JSON.stringify({
+                    nn: nn,
+                    weights: weights,
+                    bias_weights: bias_weights,
+                    gradients: gradients,
+                    error: error,
+                    labels: labels
+                })
             },
             import: function(state) {
                 var s = JSON.parse(state)
@@ -142,6 +160,8 @@
                 weights = s.weights
                 bias_weights = s.bias_weights
                 gradients = s.gradients
+                error = s.error
+                labels = s.labels
             },
         }
     }

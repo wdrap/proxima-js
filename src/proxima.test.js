@@ -66,6 +66,10 @@ describe('Proxima internal members test', function() {
         expect(p._flattenOutputs([.09], .9 )).to.deep.equal([.09])
         expect(p._flattenOutputs([.089], .9 )).to.deep.equal([0])
     })
+
+    it('#LabeledOutputs', function() {
+        expect(p._labelOutputs([1,0,0], ["test", "", ""])).to.equal("test")
+    })
 })
 
 describe('Proxima public api', function() {

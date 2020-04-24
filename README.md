@@ -35,14 +35,33 @@ console.log(p.predict([1,0]))
 console.log(p.predict([0,0]))
 console.log(p.predict([1,1]))
 ```
-The above program will print something like this to the console
+The above program will print something like this to the console where
+- outputs: Are the actual outputs of the neural network.
+- flattened: Are rounded values, only when within the threshold of the neural network error.
+- labeled: Form the labels parameter passed in the `train()` method, otherwise the flattened restult converted to a boolean 
 ```
 training: 32.45ms error: 0.004967480795865376 iterations: 1301
 training: 37.64ms
-{ output: [ 0.9003201828337848 ], flatten: [ 1 ] }
-{ output: [ 0.9013084243232945 ], flatten: [ 1 ] }
-{ output: [ 0.09870657427124692 ], flatten: [ 0 ] }
-{ output: [ 0.09994385760486248 ], flatten: [ 0 ] }
+{
+  outputs: [ 0.9005459992237329 ],
+  flattened: [ 1 ],
+  labeled: [ true ]
+}
+{
+  outputs: [ 0.9001820903943029 ],
+  flattened: [ 1 ],
+  labeled: [ true ]
+}
+{
+  outputs: [ 0.09853230880766463 ],
+  flattened: [ 0 ],
+  labeled: [ false ]
+}
+{
+  outputs: [ 0.0997429169712241 ],
+  flattened: [ 0 ],
+  labeled: [ false ]
+}
 ```
 ### Configuration options
 ```javascript
@@ -94,3 +113,17 @@ returns an object with where:
 - Momentum based gradient descent (todo)             
 - Implement other gradient descent optimization algorithms (todo)
  
+#Machine learing terminology (wip)
+## training data
+Each row is an sample aka example, instance, record, observation
+Each column is an _feature_ aka _predictor_, _attribute_, _independent variable_, _input_, _regressor_
+
+## neural network output
+The value we are predicting is the response aka target, outcome, label, dependent variable
+
+#Supervised learning
+
+## Classification
+the response is categorical, a finite set of values
+## Regression
+the response is ordered and continuous
