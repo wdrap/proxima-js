@@ -6,20 +6,18 @@
         nn = hyperParams.neural_network
         weights = new Array(nn.length - 2)
         bias_weights = new Array(nn.length - 2)
-        outputs = new Array(nn.length)
         gradients = new Array(nn.length-1)
+        outputs = new Array(nn.length)
 
         for (var l = 0, layers = nn.length; l < layers; l++) {
-            // initialize the output and gradient vector with a value of 0
             outputs[l] = new Array(nn[l])
-            gradients[l] = new Array(nn[l])
+            if (l > 0) gradients[l] = new Array(nn[l])
             for (var n = 0, nodes = nn[l]; n < nodes; n++) {
                 outputs[l][n] = 0
-                gradients[l][n] = 0
+                if (l > 0) gradients[l][n] = 0
             }
 
             if (l === layers - 1) break
-            // Initialize the bias vectors and weight matrices with a value between -1 and 1
             bias_weights[l] = new Array(nn[l+1])
             weights[l] = new Array(nn[l+1])
             for (var i = 0; i < nn[l+1]; i++) {
@@ -66,7 +64,7 @@
     }
 
     function backPropagation(targets) {
-        for (var l = nn.length - 1; l >= 0; l--) {
+        for (var l = nn.length - 1; l > 0; l--) {
             for (var n = 0, nodes = nn[l]; n < nodes; n++) {
                 var error = 0
                 if (l === nn.length - 1) {
