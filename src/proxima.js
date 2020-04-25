@@ -46,14 +46,23 @@
         return outputs[nn.length - 1]
     }
 
-    function costFunction(targets) {
+    function costFunction(targets, type) {
         var output = outputs[outputs.length - 1]
         var error = 0
         for (var i = 0; i < output.length; i++) {
             error += Math.pow(targets[i] - output[i], 2)
         }
-        var se = 0.5 * error
-        return se
+
+        switch (type) {
+            case 'SE':
+                return 1 / 2 * error
+            case 'MSE':
+                return 1 / output.length * error
+            case 'RMS':
+                return Math.sqrt(1 / output.length * error)
+            case 'SSE':
+                return error
+        }
     }
 
     function backPropagation(targets) {
@@ -109,25 +118,25 @@
         hyperParameters.neural_network = hyperParameters.neural_network || [2,3,1]
         hyperParameters.learning_rate = hyperParameters.learning_rate || 0.3
 
-        var epoch_limit = hyperParameters.epoch_limit || 15000
+        var cost_function = hyperParameters.cost_function || 'SE'
         var cost_threshold = hyperParameters.cost_threshold || 0.005
+        var epoch_limit = hyperParameters.epoch_limit || 15000
         var log_after_x_epochs = hyperParameters.log_after_x_epochs || 0
         setup(hyperParameters)
         return {
             train: function(data, target_labels) {
                 labels = target_labels
-                error = 1
                 console.time('training')
-                for (var epoch = 0; epoch < epoch_limit && error > cost_threshold;) {
+                for (var epoch = 1; epoch < epoch_limit; epoch++) {
                     for (var j = 0, length = data.length; j < length; j++) {
                         feedForward(data[j].inputs)
-                        error = costFunction(data[j].targets)
-                        if (++epoch % log_after_x_epochs === 0 || error <= cost_threshold)
-                            console.timeLog('training', 'error: ' + error + ' epochs: ' + epoch)
-                        if (error <= cost_threshold) break;
+                        error = costFunction(data[j].targets, cost_function)
                         backPropagation(data[j].targets)
                         updateWeights(hyperParameters.learning_rate)
                     }
+                    if (epoch % log_after_x_epochs === 0 || error <= cost_threshold)
+                        console.timeLog('training', 'error: ' + error + ' epochs: ' + epoch)
+                    if (error <= cost_threshold) break;
                 }
                 console.timeEnd('training')
             },

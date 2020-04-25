@@ -23,9 +23,10 @@ var xor_training_data = [
 var hyperParameters = {
     neural_network: [2,3,1],
     learning_rate: 0.5,
-    max_iterations: 15000,
+    cost_function: 'SE',
     cost_threshold: 0.005,
-    log_after_x_iterations: 0,
+    epoch_limit: 15000,
+    log_after_x_epochs: 0,
 }
 
 var p = new Proxima(hyperParameters)
@@ -68,9 +69,10 @@ training: 37.64ms
 var hyperParameters = {
     neural_network: [2,3,1],    // 3 layered neural network with 1 input layer with 2 nodes, 1 hidden layer with 3 nodes and 1 output layer with 1 node
     learning_rate: 0.5,         // η Defaults to 0.5
-    max_iterations: 15000,      // Maximum training iterations if the cost_threshold in not reached
+    cost_function: 'SE',        // Default 'SE' squared error other possible values are MSE, RMS and SSE
     cost_threshold: 0.005,      // Stops training when the result of the cost/loss function is less, defaults to 0.05  
-    log_after_x_iterations: 0,  // Outputs the error after x iterations, 0 means no output
+    epoch_limit: 15000,         // Maximum training iterations if the cost_threshold in not reached
+    log_after_x_epochs: 0,      // Outputs the error after x iterations, 0 means no output
 }
 ```
 ### Export/import the neural network state

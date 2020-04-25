@@ -10,8 +10,9 @@ var xor_training_data = [
 var hyperParameters = {
     neural_network: [2,3,1],
     learning_rate: 0.5,
-    epoch_limit: 15000,
     cost_threshold: 0.005,
+    cost_function: 'MSE',
+    epoch_limit: 15000,
     log_after_x_epochs: 0,
 }
 

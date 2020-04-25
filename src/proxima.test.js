@@ -37,9 +37,15 @@ describe('Proxima internal members test', function() {
         }))
 
         p._feedForward([.15, .35])
-        var se = p._costFunction([0, 1])
 
-        expect(se).to.equal(0.21106613757213508)
+        expect(p._costFunction([0, 1], 'SE'))
+            .to.equal(0.21106613757213508)
+        expect(p._costFunction([0, 1], 'MSE'))
+            .to.equal(0.21106613757213508)
+        expect(p._costFunction([0, 1], 'RMS'))
+            .to.equal(0.45941934827794867)
+        expect(p._costFunction([0, 1], 'SSE'))
+            .to.equal(0.42213227514427015)
     })
 
     it('#backPropagation()', function() {
