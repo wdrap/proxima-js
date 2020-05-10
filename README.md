@@ -1,6 +1,6 @@
 # Proxima
 Proxima is a **fully connected neural network** micro library written in javascript for browsers and nodejs.
- 
+  
 _Support Proxima development by donating or becoming a sponsor._   
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=878QVT5YLAQC2&currency_code=EUR&source=url)
 [![Donate](http://img.shields.io/liberapay/patrons/wdrap.svg?logo=liberapay)](https://liberapay.com/wdrap/donate)
@@ -37,9 +37,6 @@ console.log(p.predict([0,0]))
 console.log(p.predict([1,1]))
 ```
 The above program will print something like this to the console where
-- outputs: Are the actual outputs of the neural network.
-- flattened: Are rounded values, only when within the threshold of the neural network error.
-- labeled: Form the labels parameter passed in the `train()` method, otherwise the flattened restult converted to a boolean 
 ```
 training: 32.45ms error: 0.004967480795865376 iterations: 1301
 training: 37.64ms
@@ -64,6 +61,15 @@ training: 37.64ms
   labeled: [ false ]
 }
 ```
+The `predict()` method returns an object with the following properties:
+- outputs: An array with the actual output of each node in the neural network .
+- flattened: An array with the rounded output values for each node, only when within the threshold of the neural network error.
+- labeled: An array of labels if passed in the `train()` method, otherwise the flattened result converted to a boolean. 
+
+You can also train your network with the '**training and insights**' project from the examples-web folder
+![](readme-assests/insights.png)
+
+
 ### Configuration options
 ```javascript
 var hyperParameters = {

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Proxima</title>
+    <link rel="stylesheet" href="styles/index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Proxima-js</h1>
+        <h4>Training insights and statistics</h4>
+    </header>
+    <main class="main">
+        <div class="charts">
+            <canvas id="costChart"></canvas>
+            <canvas id="accuracyChart"></canvas>
+        </div>
+        <ul class="form">
+            <li>
+                <div class="row" >
+                    <label for="neuralNetwork" title="Neural network">Neural network =</label>
+                    <input id="neuralNetwork" clamp="nn" type="text" />
+                </div>
+            </li>
+            <li>
+                <div class="row">
+                    <label for="learingRate" title="Learning rate">η =</label>
+                    <input id="learingRate" clamp="lr" type="number" step="0.1" min="0.000001" max="000001" maxlength="9" size="9" />
+                </div>
+            </li>
+            <li>
+                <div class="row">
+                    <label for="costFunction" title="Cost function">Cost function =</label>
+                    <input id="costFunction" clamp="cf" type="text" size="3" maxlength="3" max="3" />
+                </div>
+            </li>
+            <li>
+                <div class="row">
+                    <label for="costThreshold" title="Cost threshold">Cost threshold =</label>
+                    <input id="costThreshold" clamp="ct" type="number" />
+                </div>
+            </li>
+            <li>
+                <div class="row">
+                    <label for="maxEpochs" title="Maximum epochs">Max epochs =</label>
+                    <input id="maxEpochs" clamp="me" type="number"  />
+                </div>
+            </li>
+            <li>
+                <div class="row">
+                    <label for="logEpochs" title="Log after epochs">Log after epochs =</label>
+                    <input id="logEpochs" clamp="le" type="number" size="4" maxlength="4" />
+                </div>
+            </li>
+            <li>
+                <div class="row">
+                    <label for="trainingData" title="Training data">Training&nbspdata&nbsp=</label>
+                    <textarea id="trainingData" clamp="trainingData" wrap="off" cols="40" rows="8"></textarea>
+                </div>
+            </li>
+            <li>
+                <div class="row">
+                    <label for="targetLabels" title="Target labels">Target labels =</label>
+                    <input id="targetLabels" clamp="tl" type="text" />
+                </div>
+            </li>
+            <li class="actions">
+                <a href="#" class="button_train actionLink">Train</a>
+                <a href="#" class="button_reset actionLink">Reset</a>
+                <a href="#" class="button_export actionLink" download="proxima_nn.json">Export</a>
+            </li>
+        </ul>
+    </main>
+    <script src="scripts/clamp.js"></script>
+    <script src="scripts/index.js"></script>
+</body>
+</html>

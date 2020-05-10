@@ -1,0 +1,95 @@
+body {
+    background-color: #313131;
+    color: #d3d1d4;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2em;
+}
+header {
+    text-align: center;
+}
+p {
+    font-family: 'Lato', sans-serif;
+}
+main {
+    display: flex;
+}
+
+ul.form {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding-top: 16px;
+}
+ul.form > li {
+    padding: 8px 0;
+}
+ul.form > li > .row {
+    display: flex;
+    padding: 10px 25px;
+    border-radius: 10px;
+    background: #313131;
+    box-shadow: inset 5px 5px 10px #272727,
+    inset -5px -5px 10px #3b3b3b;
+}
+ul.form > li > .row > input {
+    flex-grow: 1;
+}
+ul.form > li.actions{
+    text-align: end;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {-webkit-appearance: none;}
+input[type=number] {-moz-appearance:textfield;}
+
+input[type=number],
+input[type=text],
+textarea {
+    border: none;
+    outline: none;
+    color: #d3d1d4;
+    background: transparent;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1em;
+    overflow: auto;
+    overflow-x: hidden;
+}
+textarea::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+textarea::-webkit-scrollbar{
+    background-color: transparent;
+}
+textarea::-webkit-scrollbar-thumb{
+    border-radius: 100px;
+    background-color: #d3d1d4;
+}
+textarea::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.actionLink {
+    display: inline-block;
+    outline: none;
+    padding: 10px 25px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 100;
+    color: #d3d1d4;
+    border-radius: 10px;
+    background: #313131;
+    box-shadow:  5px 5px 10px #272727,
+    -5px -5px 10px #3b3b3b;
+}
+.actionLink:hover {
+    border-radius: 10px;
+    background: linear-gradient(145deg, #2c2c2c, #343434);
+    box-shadow:  5px 5px 10px #272727,
+    -5px -5px 10px #3b3b3b;
+}
+.actionLink:active {
+    border-radius: 10px;
+    background: #313131;
+    box-shadow: inset 5px 5px 10px #272727,
+    inset -5px -5px 10px #3b3b3b;
+}

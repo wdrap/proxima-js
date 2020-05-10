@@ -53,14 +53,13 @@ describe('Proxima internal members test', function() {
             "nn":[2,2,2],
             "weights": [[[0.1, 0.12], [0.2, 0.17]], [[0.05, 0.33], [0.4, 0.07]]],
             "bias_weights":[[0.8, 0.25], [0.15, 0.7]],
-            "gradients":[[0,0],[0,0],[0,0]]
+            "gradients":[[0,0],[0,0]]
         }))
         p._feedForward([.15, .35])
 
         p._backPropagation([0, 1])
 
         expect(p._gradients()).to.eql([
-            [-0.00023446365814264232, -0.0003332022601439299],
             [0.0028133067134372743, -0.010601306617214415],
             [-0.14316732182367956, 0.051518554765687945]
         ])
@@ -90,7 +89,7 @@ describe('Proxima public api', function() {
         expect(state.nn).to.deep.equal([2,3,1])
         expect(state.weights).to.have.length(2)
         expect(state.bias_weights).to.have.length(2)
-        expect(state.gradients).to.deep.equal([[0,0],[0,0,0],[0]])
+        expect(state.gradients).to.deep.equal([[0,0,0],[0]])
     })
 
     it('#export()', function() {

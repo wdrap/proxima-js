@@ -11,10 +11,10 @@
 
         for (var l = 0, layers = nn.length; l < layers; l++) {
             outputs[l] = new Array(nn[l])
-            if (l > 0) gradients[l] = new Array(nn[l])
+            if (l > 0) gradients[l-1] = new Array(nn[l])
             for (var n = 0, nodes = nn[l]; n < nodes; n++) {
                 outputs[l][n] = 0
-                if (l > 0) gradients[l][n] = 0
+                if (l > 0) gradients[l-1][n] = 0
             }
 
             if (l === layers - 1) break
@@ -70,11 +70,11 @@
                 if (l === nn.length - 1) {
                     error = targets[n] - outputs[l][n]
                 } else {
-                    for (var g = 0; g < gradients[l+1].length; g++) {
-                        error +=  gradients[l+1][g] * weights[l][g][n]
+                    for (var g = 0; g < gradients[l].length; g++) {
+                        error +=  gradients[l][g] * weights[l][g][n]
                     }
                 }
-                gradients[l][n] = error * outputs[l][n] * (1 - outputs[l][n])
+                gradients[l-1][n] = error * outputs[l][n] * (1 - outputs[l][n])
             }
         }
     }
@@ -82,9 +82,9 @@
     function updateWeights(learningRate) {
         for (var l = 0; l < nn.length - 1; l++) {
             for (var n = 0; n < nn[l+1]; n++) {
-                bias_weights[l][n] += gradients[l+1][n] * learningRate
+                bias_weights[l][n] += gradients[l][n] * learningRate
                 for (var s = 0; s < nn[l]; s++) {
-                    weights[l][n][s] += gradients[l+1][n] * learningRate * outputs[l][s]
+                    weights[l][n][s] += gradients[l][n] * learningRate * outputs[l][s]
                 }
             }
         }
@@ -111,6 +111,31 @@
         return labelled
     }
 
+    var stats = {
+        total: 0,
+        pos: 0,
+        neg: 0,
+        update: function(targets, outputs, error) {
+            this.total++
+            var flattened = flattenOutputs(outputs, error)
+
+            var valid = true
+            for (var i = 0; i < flattened.length; i++) {
+                if (flattened[i] !== targets[i]) {
+                    valid = false
+                    break;
+                }
+            }
+            valid ? this.pos++ : this.neg++
+        },
+        avg: function() {
+            return this.pos / this.total * 100
+        },
+        reset: function() {
+            this.total = this.pos = this.neg = 0
+        }
+    }
+
     function Proxima(hyperParameters) {
         hyperParameters = hyperParameters || {}
         hyperParameters.neural_network = hyperParameters.neural_network || [2,3,1]
@@ -122,21 +147,22 @@
         var log_after_x_epochs = hyperParameters.log_after_x_epochs || 0
         setup(hyperParameters)
         return {
-            train: function(data, target_labels) {
+            train: function(data, target_labels, statsCallback) {
                 labels = target_labels
-                console.time('training')
                 for (var epoch = 1; epoch < epoch_limit; epoch++) {
                     for (var j = 0, length = data.length; j < length; j++) {
-                        feedForward(data[j].inputs)
+                        var yHat = feedForward(data[j].inputs)
                         error = costFunction(data[j].targets, cost_function)
+                        stats.update(data[j].targets, yHat, error)
                         backPropagation(data[j].targets)
                         updateWeights(hyperParameters.learning_rate)
                     }
-                    if (epoch % log_after_x_epochs === 0 || error <= cost_threshold)
-                        console.timeLog('training', 'error: ' + error + ' epochs: ' + epoch)
+                    if (typeof statsCallback === 'function' && (epoch % log_after_x_epochs === 0 || error <= cost_threshold)) {
+                        statsCallback(error, epoch, stats.avg())
+                        stats.reset()
+                    }
                     if (error <= cost_threshold) break;
                 }
-                console.timeEnd('training')
             },
             predict: function(inputs) {
                 var outputs = feedForward(inputs)
@@ -184,7 +210,9 @@
 
     if (typeof exports !== 'undefined' && module.exports) {
         module.exports = Proxima
-    } else {
-        this.Proxima = Proxima
+    } else if (typeof window !== 'undefined') {
+        window.Proxima = Proxima
+    } else { // for use with Web Worker
+        self.Proxima = Proxima
     }
 })()
