@@ -16,7 +16,7 @@
     "grunt": "^1.0.4",
     "grunt-contrib-uglify": "^4.0.1",
     "grunt-strip-code": "^1.0.6",
-    "mocha": "^7.1.1"
+    "mocha": "^10.2.0"
   },
   "dependencies": {},
   "repository": {
